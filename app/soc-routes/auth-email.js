@@ -1,17 +1,16 @@
-"use strict";
 
-const Connection = require("../services/connection");
+const Connection = require("../core/connection");
 
-const database = require("../services/database").db;
+const database = require("../core/database").db;
 const User = database.model("User");
 
 const md5 = require("crypto-js/md5");
 
-const Utils = require("../services/utils");
+const Utils = require("../core/utils");
 
 Connection.on(
   "auth.token",
-  async function(socket_id, params, cb) {
+  async function (socket_id, params, cb) {
     if (params.token === undefined) return cb({ error: "Token is required" });
     let user = await User.getByToken(params.token);
     if (user === null) return cb({ error: "User not found" });
@@ -21,7 +20,7 @@ Connection.on(
   true
 );
 
-Connection.on("auth.logout", async function(userSocket, params, cb) {
+Connection.on("auth.logout", async function (userSocket, params, cb) {
   let user = await User.getById(userSocket.user_id);
   if (user === null) return;
   user.auth = user.auth.filter(_ => _.token !== params.token);
@@ -31,7 +30,7 @@ Connection.on("auth.logout", async function(userSocket, params, cb) {
 
 Connection.on(
   "auth.login",
-  async function(socket_id, params, cb) {
+  async function (socket_id, params, cb) {
     if (params.email === undefined || params.password === undefined)
       return cb({ error: "Email and Password is required" });
     let user = await User.getByEmail(params.email);
@@ -45,9 +44,7 @@ Connection.on(
       return cb({ error: "Password invalid" });
     }
 
-    let token = md5(
-      Utils.random(0, 999999) + "" + Utils.time() + "" + user.salt
-    ).toString();
+    let token = md5(Utils.random(0, 999999) + "" + Utils.time() + "" + user.pass_salt).toString();
 
     user.auth.push({ token: token });
     await user.save();
@@ -59,7 +56,7 @@ Connection.on(
 
 Connection.on(
   "auth.register",
-  async function(socket_id, params, cb) {
+  async function (socket_id, params, cb) {
     if (params.email === undefined || params.password === undefined)
       return cb({ error: "Email and Password is required" });
     let userExist = await User.getByEmail(params.email);

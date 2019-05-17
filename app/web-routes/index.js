@@ -1,7 +1,6 @@
-"use strict";
 
 const router = require("express").Router();
-const app = require("../services/webexpress").app;
+const app = require("../core/webexpress").app;
 app.use("/", router);
 
 router.get("/", async function(req, res, next) {

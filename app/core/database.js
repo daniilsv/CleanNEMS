@@ -1,5 +1,6 @@
-const fs = require("fs");
-const join = require("path").join;
+const glob = require("glob");
+const path = require("path");
+const join = path.join;
 const mongoose = require("mongoose");
 const config = require("../configs");
 
@@ -16,15 +17,15 @@ function connect() {
 
 function _config() {
   const models = join(__dirname, "../models");
-  fs.readdirSync(models)
-    .filter(file => ~file.search(/^[^\.].*\.js$/))
-    .forEach(file => require(join(models, file)));
+  glob.sync(models + "/**/*.js").forEach(function(file) {
+    require(path.resolve(file));
+  });
 }
 
 module.exports = class {
   static init() {
     return connect()
-      .on("error", console.log)
+      .on("error", log.e)
       .on("disconnected", connect)
       .on("close", connect)
       .once("open", _config);

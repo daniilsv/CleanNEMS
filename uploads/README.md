@@ -1,1 +1,1 @@
-/services/uploader.js will store uploaded files here
+/core/uploader.js will store uploaded files here

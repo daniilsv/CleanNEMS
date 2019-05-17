@@ -1,11 +1,42 @@
 # CleanNEMS
 
-NodeJs + Express + MongoDb + Socket.io
+NodeJs + Express + MongoDb + WebSocket
 
 Clean version
 
-edit files under:
+## Installation
+
+```sh
+$ git clone https://github.com/daniilsv/CleanNEMS
+```
+
+## Quick Start
+
+Create the app:
+
+```bash
+$ npm run init
+```
+
+Install dependencies:
+
+```bash
+$ npm install
+```
+
+Start your app:
+
+```bash
+$ npm start
+```
+
+
+## Usage
+
+Edit files under:
  - app/configs
  - app/models
+ - app/runtime
  - app/web-routes
- - app/sio-routes
+ - app/soc-routes
+

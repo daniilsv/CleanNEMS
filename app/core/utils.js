@@ -14,8 +14,5 @@ module.exports = {
 
   time: () => {
     return (Date.now() / 1000) | 0;
-  },
-  without: (arr, ...args) => {
-    return arr.filter(v => !args.includes(v));
   }
 };
