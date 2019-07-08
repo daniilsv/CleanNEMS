@@ -38,13 +38,13 @@ Connection.on(
       return cb({ error: "User with this Email still not registered" });
 
     let password = md5(
-      user.pass_salt + "" + md5(params.password).toString()
+      user.passSalt + "" + md5(params.password).toString()
     ).toString();
     if (password !== user.password) {
       return cb({ error: "Password invalid" });
     }
 
-    let token = md5(Utils.random(0, 999999) + "" + Utils.time() + "" + user.pass_salt).toString();
+    let token = md5(Utils.random(0, 999999) + "" + Utils.time() + "" + user.passSalt).toString();
 
     user.auth.push({ token: token });
     await user.save();
@@ -73,7 +73,7 @@ Connection.on(
     let user = new User({
       email: params.email,
       password: password,
-      pass_salt: salt,
+      passSalt: salt,
       name: {
         first: params.name_first,
         second: params.name_second || ""

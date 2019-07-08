@@ -11,9 +11,9 @@ const md5 = require("crypto-js/md5");
 
 /**
  * Авторизация
- * @route POST /auth/email/login
- * @group Eauth - Аутентификация
- * @operationId Elogin
+ * @route POST /email/auth/login
+ * @group auth - Аутентификация
+ * @operationId login_email
  * @param {string} email.formData.required - email пользователя
  * @param {string} password.formData.required - пароль пользователя
  * @produces application/json
@@ -29,16 +29,14 @@ router.post("/login", async function (req, res, next) {
       response: "There is no user with this email"
     });
 
-  let password = md5(
-    user.pass_salt + "" + md5(params.password).toString()
-  ).toString();
+  let password = md5(user.passSalt + "" + md5(req.body.password).toString()).toString();
   if (password !== user.password)
     return res.send({
       error: true,
       response: "Password incorrect"
     });
 
-  let token = md5(Utils.random(0, 999999) + "" + Utils.time() + "" + user.pass_salt).toString();
+  let token = md5(Utils.random(0, 999999) + "" + Utils.time() + "" + user.passSalt).toString();
 
   user.auth.push({ token: token });
   await user.save();
@@ -51,9 +49,9 @@ router.post("/login", async function (req, res, next) {
 
 /**
  * Регистрация
- * @route POST /auth/email/register
- * @group Eauth - Аутентификация
- * @operationId Eregister
+ * @route POST /email/auth/register
+ * @group auth - Аутентификация
+ * @operationId register_email
  * @param {string} email.formData.required - email пользователя
  * @param {string} password.formData.required - пароль пользователя
  * @produces application/json
@@ -77,7 +75,7 @@ router.post("/register", async function (req, res, next) {
   let user = new User({
     email: req.body.email,
     password: password,
-    pass_salt: salt,
+    passSalt: salt,
     auth: [{ token: token }]
   });
   await user.save();
@@ -94,9 +92,9 @@ router.post("/register", async function (req, res, next) {
 /**
  * Выход
  * Удалит используемый токен из базы. Вход по нему более невозможен
- * @route POST /auth/email/logout
- * @group Eauth - Аутентификация
- * @operationId Elogout
+ * @route POST /email/auth/logout
+ * @group auth - Аутентификация
+ * @operationId logout_email
  * @returns 200 - при успехе
  * @security Token
  */

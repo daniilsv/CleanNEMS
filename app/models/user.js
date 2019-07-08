@@ -1,19 +1,35 @@
 const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
 
+/**
+ * @typedef UserName
+ * @property {string} first.required - имя
+ * @property {string} second - фамилия
+ */
+/**
+ * @typedef User
+ * @property {string} _id.required - id
+ * @property {string} email - E-mail
+ * @property {string} phone - телефон
+ * @property {UserName} name - имя
+ */
 const UserSchema = new Schema(
   {
     email: String,
     phone: String,
     password: String,
-    pass_salt: String,
+    passSalt: String,
     authCode: Number,
     auth: [
       {
         token: String,
         time: { type: Date, default: Date.now }
       }
-    ]
+    ],
+    name: {
+      first: String,
+      second: String,
+    },
   },
   {
     toObject: {
@@ -21,7 +37,7 @@ const UserSchema = new Schema(
         if (!options["with_auth"]) delete ret.auth;
         if (!options["with_pass"]) {
           delete ret.password;
-          delete ret.pass_salt;
+          delete ret.passSalt;
         }
         delete ret.__v;
         return ret;

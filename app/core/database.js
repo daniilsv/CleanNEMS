@@ -17,7 +17,7 @@ function connect() {
 
 function _config() {
   const models = join(__dirname, "../models");
-  glob.sync(models + "/**/*.js").forEach(function(file) {
+  glob.sync(models + "/**/*.js").forEach(function (file) {
     require(path.resolve(file));
   });
 }

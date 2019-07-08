@@ -17,10 +17,10 @@ function _config() {
         version: "1.0.0",
         description: ""
       },
-      host: "__DOMAIN__",
+      host: config.web_host,
       basePath: "/api",
       produces: ["application/json"],
-      schemes: ["https"],
+      schemes: [config.web_scheme],
       securityDefinitions: {
         Token: {
           type: "apiKey",
