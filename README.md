@@ -2,6 +2,10 @@
 
 NodeJs + Express + MongoDb + WebSocket
 
+## is rewriting for NSFM
+
+NodeJs + webSocket + Fastify + MongoDb
+
 Clean version
 
 ## Installation
