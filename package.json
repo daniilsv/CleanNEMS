@@ -9,6 +9,6 @@
     "glob": "^7.1.4",
     "npm-check-updates": "^3.1.16",
     "sao": "^1.6.1",
-    "shelljs": "^0.8.3"
+    "shelljs": "^0.8.5"
   }
 }
